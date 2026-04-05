@@ -2,6 +2,7 @@ package com.bharatcart.bharatcart_backend.service;
 
 import com.bharatcart.bharatcart_backend.entity.*;
 import com.bharatcart.bharatcart_backend.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,6 +16,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CartService {
 
     private final CartRepository cartRepository;
@@ -73,8 +75,17 @@ public class CartService {
     }
 
     public void removeItem(String email, Long itemId) {
+        System.out.println("Deleting item id: " +itemId + " for User: "+email);
         CartItem item = findOwnedCartItem(email, itemId);
+        System.out.println("item: "+item);
+        Cart cart = item.getCart();
+
+        // ✅ Remove from cart list
+        cart.getItems().remove(item);
+
+        // ✅ Delete explicitly
         cartItemRepository.delete(item);
+
     }
 
     public void removeItemByProductId(String email, Long productId) {
