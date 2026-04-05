@@ -1,0 +1,149 @@
+PROJECT: BharatCart (Reusable Ecommerce System)
+
+---
+
+## TECH STACK
+
+Frontend:
+
+* React (Vite)
+* Context API (Auth + Cart)
+* Axios for API calls
+* Tailwind CSS
+
+Backend:
+
+* Spring Boot
+* Spring Security (JWT आधारित authentication)
+* JPA + Hibernate
+* PostgreSQL database
+
+---
+
+## ARCHITECTURE OVERVIEW
+
+Frontend and backend are fully decoupled.
+
+Frontend (Port 5173):
+
+* Handles UI, state, API calls
+
+Backend (Port 8080):
+
+* Handles authentication, cart, products, database
+
+---
+
+## AUTHENTICATION FLOW (JWT)
+
+* User logs in → backend returns JWT token
+* Token stored in localStorage
+* Axios attaches token in Authorization header
+* Protected APIs require valid JWT
+
+---
+
+## CART SYSTEM (VERY IMPORTANT)
+
+Two types of cart:
+
+1. Guest Cart:
+
+* Stored in localStorage
+* Works WITHOUT login
+* Used when no token is present
+
+2. User Cart:
+
+* Stored in database
+* Accessed via /api/cart
+* Requires JWT token
+
+---
+
+## EXPECTED CART BEHAVIOR
+
+* User can add/view cart WITHOUT login
+* On login → guest cart should merge into user cart
+* Navbar shows cart count (guest + user)
+* Cart page should NEVER be protected route
+
+---
+
+## FRONTEND STRUCTURE
+
+src/
+├ api/
+│   └ axios.js
+├ context/
+│   ├ AuthContext.jsx
+│   └ CartContext.jsx
+├ components/
+│   ├ Navbar.jsx
+│   └ ProductCard.jsx
+├ pages/
+│   ├ Home.jsx
+│   ├ ProductDetails.jsx
+│   ├ Cart.jsx
+│   ├ Login.jsx
+│   └ Signup.jsx
+
+---
+
+## BACKEND STRUCTURE
+
+controller/
+
+* AuthController
+* ProductController
+* CartController
+
+security/
+
+* SecurityConfig
+* JwtAuthenticationFilter
+* JwtUtil
+
+entity/
+
+* User
+* Product
+* CartItem
+
+---
+
+## API RULES
+
+PUBLIC APIs:
+
+* /api/auth/**
+* /api/products/**
+
+PROTECTED APIs:
+
+* /api/cart/**
+
+---
+
+## COMMON ISSUES TO AVOID
+
+* Cart route should NOT be protected
+* Navbar should NOT force login for cart
+* Always check token before calling cart API
+* Handle guest cart fallback properly
+* Avoid breaking existing structure while fixing bugs
+
+---
+
+## GOAL
+
+Build a reusable ecommerce system that:
+
+* Supports guest + logged-in users
+* Can be reused for multiple clients
+* Is scalable and cleanly structured
+
+---
+Cart remove fix:
+- Must remove item from cart.items
+- orphanRemoval=true is enabled
