@@ -122,12 +122,12 @@ export const CartProvider = ({ children }) => {
         console.log("Cannot remove item: missing cart item id and product id");
         return;
       }
-      console.log("product id:", product.id)
+     
       await api.delete(`/cart/remove/by-product/${productId}`);
       await refreshCart();
       return;
     }
-    console.log("item id", item.id)
+ 
     await api.delete(`/cart/remove/${item.id}`);
     await refreshCart();
 
@@ -174,6 +174,12 @@ export const CartProvider = ({ children }) => {
     0
   );
 
+  const isInCart = (productId) => {
+    return cartItems.some(
+      item => (item.productId ?? item.product?.id) === productId
+    );
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -182,7 +188,8 @@ export const CartProvider = ({ children }) => {
         refreshCart,
         addToCart,
         removeFromCart,
-        updateQuantity
+        updateQuantity,
+        isInCart
       }}
     >
       {children}

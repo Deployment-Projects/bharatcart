@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product }) {
 
-  const { addToCart } = useCart();
+  const { addToCart, isInCart } = useCart();
 
   const navigate = useNavigate();
+
+   const alreadyAdded = isInCart(product.id);
 
   const handleAddToCart = () => {
     addToCart(product);
@@ -36,12 +38,25 @@ export default function ProductCard({ product }) {
         ₹ {product.price}
       </p>
 
-      <button
-        onClick={handleAddToCart}
-        className="mt-6 w-full bg-accent text-white py-2 rounded-lg hover:bg-orange-600 transition"
-      >
-        Add to Cart
-      </button>
+
+
+      {
+                alreadyAdded ? (
+                    <button
+                        onClick={() => navigate("/cart")}
+                        className="mt-6 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-600 transition"
+                    >
+                        Go to Cart
+                    </button>
+                ) : (
+                    <button
+                        onClick={() => addToCart(product)}
+                        className="mt-6 w-full bg-accent text-white py-2 rounded-lg hover:bg-orange-600 transition"
+                    >
+                        Add to Cart
+                    </button>
+                )
+            }
 
     </div>
 
