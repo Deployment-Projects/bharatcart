@@ -34,7 +34,7 @@ useEffect(() => {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Navbar />
+      {/* <Navbar /> */}
 
       {/* Hero */}
       <div className="bg-gradient-to-r from-primary to-blue-600 text-white text-center py-24">

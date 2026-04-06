@@ -25,12 +25,15 @@ export default function Navbar() {
   };
 
   return (
-      <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
+    <nav className="bg-white/70 backdrop-blur-md shadow-md px-8 py-4 flex justify-between items-center sticky top-0 z-50">
 
       {/* Logo */}
-      <Link to="/" className="text-2xl font-bold text-blue-600">
-        BharatCart
-      </Link>
+      <Link
+  to="/"
+  className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text"
+>
+  BharatCart
+</Link>
 
       {/* Search Bar */}
       <form
@@ -62,7 +65,7 @@ export default function Navbar() {
         ) : (
           <Link
             to="/login"
-            className="text-gray-700 hover:text-blue-600 transition"
+          className="transition duration-300 hover:scale-105 hover:text-blue-600"
           >
             Login
           </Link>
@@ -70,7 +73,7 @@ export default function Navbar() {
         {/* Cart Icon */}
         <div
           onClick={() => navigate("/cart")}
-          className="relative cursor-pointer"
+          className="relative cursor-pointer transition duration-300 hover:scale-110"
         >
           <ShoppingCart size={24} />
 

@@ -147,3 +147,6 @@ Build a reusable ecommerce system that:
 Cart remove fix:
 - Must remove item from cart.items
 - orphanRemoval=true is enabled
+
+
+Before UI Design change (06/04/26)

@@ -13,7 +13,7 @@ export default function Cart() {
   if (cartItems.length === 0) {
     return (
       <div>
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="p-10 text-center">
           <h2 className="text-xl font-semibold">
             🛒 Your cart is empty
@@ -26,7 +26,7 @@ export default function Cart() {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <div className="max-w-4xl mx-auto py-10">
 

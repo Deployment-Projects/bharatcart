@@ -15,7 +15,7 @@ export default function ProductCard({ product }) {
 
   return (
 
-    <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 transform hover:-translate-y-2 p-5">
+    <div className="bg-white shadow-md p-4 rounded-lg transition duration-300 hover:scale-105 hover:shadow-xl">
 
       <div
         onClick={() => navigate(`/product/${product.id}`)}
@@ -44,14 +44,14 @@ export default function ProductCard({ product }) {
                 alreadyAdded ? (
                     <button
                         onClick={() => navigate("/cart")}
-                        className="mt-6 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-600 transition"
+                      className="bg-green-500 px-4 py-2 rounded transition duration-300 hover:scale-105 hover:bg-green-600"
                     >
                         Go to Cart
                     </button>
                 ) : (
                     <button
                         onClick={() => addToCart(product)}
-                        className="mt-6 w-full bg-accent text-white py-2 rounded-lg hover:bg-orange-600 transition"
+                        className="bg-yellow-500 px-4 py-2 rounded transition duration-300 hover:scale-105 hover:bg-yellow-600"
                     >
                         Add to Cart
                     </button>
