@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
+import StickyCart from "../components/StickyCart";
 
 const MainLayout = () => {
   return (
@@ -9,7 +10,7 @@ const MainLayout = () => {
       <Navbar />
 
       {/* 📄 Page Content */}
-      <main className="flex-grow px-6 py-6">
+      <main className="flex-grow py-6">
         <Outlet />
       </main>
 
@@ -19,7 +20,8 @@ const MainLayout = () => {
           © 2026 BharatCart. Built with ❤️ in India
         </p>
       </footer>
-
+      
+      <StickyCart />
     </div>
   );
 };

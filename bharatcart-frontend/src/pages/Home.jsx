@@ -1,60 +1,52 @@
-import api from "../api/axios";
-import Navbar from "../components/Navbar";
+import HeroSection from "../components/HeroSection";
+import StyleFinder from "../components/StyleFinder";
 import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
+import api from "../api/axios";
+import TrustStrip from "../components/TrustStrip";
 
-// const products = [
-//   {
-//     image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80"
-//   },{
-//     image: "https://images.unsplash.com/photo-1593784991095-a205069470b6"
-//  },{
-//     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff"
-//   }
-// ];
-
-export default function Home() {
-
+const Home = () => {
   const [products, setProducts] = useState([]);
+  const [style, setStyle] = useState("");
 
-useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      console.log("Calling backend...");
-      const response = await api.get("/products");
-      console.log("Response:", response);
-      setProducts(response.data);
-    } catch (error) {
-      console.log("Full error object:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const res = await api.get("/products");
+      setProducts(res.data);
+    };
+    fetchProducts();
+  }, []);
 
-  fetchProducts();
-}, []);
+  const filtered = (style
+    ? products.filter(p =>
+        p.category?.toLowerCase().includes(style)
+      )
+    : products
+  ).sort((a, b) => b.price - a.price); // temp trending logic
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      {/* <Navbar /> */}
+    <div className="space-y-10">
+      {/* 🔥 1. HERO (TOP MOST) */}
+      <HeroSection />
 
-      {/* Hero */}
-      <div className="bg-gradient-to-r from-primary to-blue-600 text-white text-center py-24">
-        <h1 className="text-5xl font-bold mb-6">
-          Shop Smart. Shop BharatCart.
-        </h1>
-        <p className="text-xl mb-8">
-          Best Prices | Fast Delivery | Cash on Delivery
-        </p>
-        <button className="bg-accent px-8 py-3 rounded-lg text-lg hover:bg-orange-600 transition transform hover:scale-105">
-          Explore Products
-        </button>
-      </div>
+      {/* 🔥 2. TRUST STRIP (just below hero) */}
+      <TrustStrip />
 
-      {/* Products */}
-      <div className="max-w-7xl mx-auto py-16 px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-        {products.map(product => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+      {/* 🔥 3. STYLE FINDER */}
+      <StyleFinder onSelect={setStyle} />
+
+      {/* PRODUCTS */}
+      <div>
+        <h2 className="text-xl font-semibold mb-4">Trending Jewellery</h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {filtered.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default Home;

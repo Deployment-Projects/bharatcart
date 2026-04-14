@@ -26,4 +26,6 @@ public class Product {
 
     @Column(length = 2000)
     private String description;
+
+    private String category; // 🔥
 }
