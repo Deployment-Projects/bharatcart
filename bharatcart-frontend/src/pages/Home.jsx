@@ -4,6 +4,7 @@ import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import TrustStrip from "../components/TrustStrip";
+import CategoryStrip from "../components/CategoryStrip";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -25,26 +26,47 @@ const Home = () => {
   ).sort((a, b) => b.price - a.price); // temp trending logic
 
   return (
-    <div className="space-y-10">
-      {/* 🔥 1. HERO (TOP MOST) */}
+    <div className="bg-[#f8f5f1] min-h-screen pb-8">
+  
+      {/* HERO */}
       <HeroSection />
-
-      {/* 🔥 2. TRUST STRIP (just below hero) */}
-      <TrustStrip />
-
-      {/* 🔥 3. STYLE FINDER */}
-      <StyleFinder onSelect={setStyle} />
-
-      {/* PRODUCTS */}
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Trending Jewellery</h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filtered.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
+  
+      {/* MAIN CONTAINER (IMPORTANT FIX) */}
+      <div className="max-w-[1400px] mx-auto space-y-1">
+  
+        {/* CATEGORY */}
+        <div className="mt-1">
+          <CategoryStrip />
         </div>
+  
+        {/* TRUST */}
+        <div className="">
+          <TrustStrip />
+        </div>
+  
+        {/* PRODUCTS */}
+        <div className="mt-6 px-2">
+  
+          <div className="flex justify-between items-center mt-3 mb-3">
+            <h2 className="text-xl font-semibold">🔥 Trending Now</h2>
+            <button className="text-sm text-gray-600 hover:text-black">
+              View All →
+            </button>
+          </div>
+  
+          {/* 🔥 USE FILTERED (IMPORTANT FIX) */}
+          <div className="grid grid-cols-5 gap-4">
+  
+            {filtered.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+  
+          </div>
+  
+        </div>
+  
       </div>
+  
     </div>
   );
 };

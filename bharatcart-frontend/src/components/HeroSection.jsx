@@ -2,7 +2,7 @@ import banner from "../assets/banner2.png";
 
 const HeroSection = () => {
   return (
-    <div className="w-full py-6">
+    <div className="w-full">
       <div className="max-w-[1400px] mx-auto px-6">
 
         {/* 🔥 HERO CONTAINER */}

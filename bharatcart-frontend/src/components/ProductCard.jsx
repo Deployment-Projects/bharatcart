@@ -1,99 +1,55 @@
-import { useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext";
-import { useState } from "react";
+import { FaHeart, FaStar } from "react-icons/fa";
 
 const ProductCard = ({ product }) => {
-  const navigate = useNavigate();
-  const { addToCart, isInCart } = useCart();
-
-  const [hovered, setHovered] = useState(false);
-  const [wishlisted, setWishlisted] = useState(() => {
-    const saved = JSON.parse(localStorage.getItem("wishlist")) || [];
-    return saved.includes(product.id);
-  });
-
-  const added = isInCart(product.id);
-
-  const toggleWishlist = () => {
-    let saved = JSON.parse(localStorage.getItem("wishlist")) || [];
-  
-    if (saved.includes(product.id)) {
-      saved = saved.filter(id => id !== product.id);
-      setWishlisted(false);
-    } else {
-      saved.push(product.id);
-      setWishlisted(true);
-    }
-  
-    localStorage.setItem("wishlist", JSON.stringify(saved));
-  };
-
   return (
-    <div
-      className="bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 relative"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
+    <div className="bg-white rounded-2xl p-4 shadow-sm hover:shadow-md border border-transparent">
 
-      {/* ❤️ WISHLIST */}
-      <div
-        onClick={toggleWishlist}
-        className="absolute top-3 right-3 bg-white p-2 rounded-full shadow cursor-pointer z-10"
-      >
-        {wishlisted ? "❤️" : "🤍"}
-      </div>
-
-      {/* 🖼 IMAGE */}
-      <div className="h-56 overflow-hidden">
+      {/* IMAGE */}
+      <div className="relative">
         <img
           src={product.imageUrl}
-          alt={product.name}
-          className={`w-full h-full object-cover transition duration-500 ${
-            hovered ? "scale-110" : "scale-100"
-          }`}
+          alt={product.title}
+          className="w-full h-[180px] object-cover rounded-lg"
         />
+
+        {/* Wishlist */}
+        <div className="absolute top-2 right-2 bg-white p-2 rounded-full shadow">
+          <FaHeart className="text-gray-400 text-sm" />
+        </div>
+
+        {/* Fake Discount */}
+        <div className="absolute bottom-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
+          50% OFF
+        </div>
       </div>
 
-      {/* 📄 CONTENT */}
-      <div className="p-4 space-y-2">
+      {/* CONTENT */}
+      <div className="mt-2 space-y-1">
 
-        <h3 className="font-medium text-gray-800 line-clamp-2">
-          {product.name}
+        {/* TITLE */}
+        <h3 className="text-sm font-medium text-gray-800 line-clamp-2">
+          {product.title}
         </h3>
 
-        {/* ⭐ RATING */}
-        <div className="text-yellow-500 text-sm">
-          ⭐⭐⭐⭐☆ <span className="text-gray-500">(84)</span>
+        {/* RATING */}
+        <div className="flex items-center gap-1 text-yellow-500 text-xs">
+          {[...Array(5)].map((_, i) => (
+            <FaStar key={i} />
+          ))}
+          <span className="text-gray-500 ml-1 text-[11px]">
+            (1,299)
+          </span>
         </div>
 
-        {/* 💰 PRICE */}
+        {/* PRICE */}
         <div className="flex items-center gap-2">
-          <span className="text-lg font-bold text-gray-900">
+          <span className="text-md font-semibold text-black">
             ₹{product.price}
           </span>
-          <span className="text-sm line-through text-gray-400">
-            ₹{Math.floor(product.price * 1.4)}
+          <span className="text-xs text-gray-400 line-through">
+            ₹{product.price + 500}
           </span>
         </div>
-
-        {/* ⚡ BUTTON */}
-        {
-          added ? (
-            <button
-              onClick={() => navigate("/cart")}
-              className="w-full bg-green-600 text-white py-2 rounded-md mt-2 transition hover:bg-green-700"
-            >
-              Go to Cart
-            </button>
-          ) : (
-            <button
-              onClick={() => addToCart(product)}
-              className="w-full bg-yellow-400 text-black py-2 rounded-md mt-2 transition hover:bg-yellow-500 active:scale-95"
-            >
-              Buy Now
-            </button>
-          )
-        }
 
       </div>
     </div>
