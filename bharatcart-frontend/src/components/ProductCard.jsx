@@ -2,8 +2,8 @@ import { FaRegHeart } from "react-icons/fa";
 import { useState } from "react";
 
 // Import sample images from assets to demonstrate the hover swap
-import defaultPrimaryImg from "../assets/products/necklace 3.png";
-import defaultHoverImg from "../assets/products/model necklace 3.png";
+import defaultPrimaryImg from "../assets/default-products/necklace 3.png";
+import defaultHoverImg from "../assets/default-products/model necklace 3.png";
 
 const ProductCard = ({ product }) => {
   const [isLoaded, setIsLoaded] = useState(false);
