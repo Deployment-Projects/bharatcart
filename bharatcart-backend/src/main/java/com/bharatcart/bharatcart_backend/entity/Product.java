@@ -24,6 +24,8 @@ public class Product {
 
     private String imageUrl;
 
+    private String hoverImageUrl;
+
     @Column(length = 2000)
     private String description;
 

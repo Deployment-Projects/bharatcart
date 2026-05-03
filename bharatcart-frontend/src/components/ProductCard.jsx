@@ -1,57 +1,83 @@
-import { FaHeart, FaStar } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
+import { useState } from "react";
+
+// Import sample images from assets to demonstrate the hover swap
+import defaultPrimaryImg from "../assets/products/necklace 3.png";
+import defaultHoverImg from "../assets/products/model necklace 3.png";
 
 const ProductCard = ({ product }) => {
-  return (
-    <div className="bg-white rounded-2xl p-4 shadow-sm hover:shadow-md border border-transparent">
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
 
-      {/* IMAGE */}
-      <div className="relative">
+  const formatImageUrl = (url) => {
+    if (!url) return null;
+    if (url.startsWith("/")) return `http://localhost:8080${url}`;
+    return url;
+  };
+
+  // Use product images if available, otherwise use the imported premium samples
+  const primaryImage = formatImageUrl(product.imageUrl) || defaultPrimaryImg;
+  const hoverImage = formatImageUrl(product.hoverImageUrl) || defaultHoverImg;
+
+  return (
+    <div className="group flex flex-col cursor-pointer w-full relative">
+
+      {/* IMAGE CONTAINER */}
+      <div className="relative w-full overflow-hidden bg-[#f9f9f9] aspect-square">
+        
+        {/* Primary Image */}
         <img
-          src={product.imageUrl}
-          alt={product.title}
-          className="w-full h-[180px] object-cover rounded-lg"
+          src={primaryImage}
+          alt={product.name || product.title}
+          onLoad={() => setIsLoaded(true)}
+          className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1000ms] ease-out ${!isButtonHovered ? 'group-hover:opacity-0' : ''} ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}
         />
 
-        {/* Wishlist */}
-        <div className="absolute top-2 right-2 bg-white p-2 rounded-full shadow">
-          <FaHeart className="text-gray-400 text-sm" />
-        </div>
+        {/* Secondary Hover Image */}
+        <img
+          src={hoverImage}
+          alt={product.name || product.title}
+          className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1000ms] ease-out opacity-0 ${!isButtonHovered ? 'group-hover:opacity-100 group-hover:scale-105' : ''}`}
+        />
 
-        {/* Fake Discount */}
-        <div className="absolute bottom-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
-          50% OFF
+        {/* Wishlist (Minimal Outline) */}
+        <button className="absolute top-3 right-3 p-2 text-gray-400 hover:text-black transition-colors z-20 bg-white/50 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 duration-300">
+          <FaRegHeart className="text-[18px]" />
+        </button>
+
+        {/* Add to cart Overlay - Prao Style Pill Button */}
+        <div 
+          className="absolute bottom-4 left-4 opacity-0 translate-y-4 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] z-20"
+          onMouseEnter={() => setIsButtonHovered(true)}
+          onMouseLeave={() => setIsButtonHovered(false)}
+        >
+          <button className="bg-[#f0eee4] text-gray-900 text-[14px] font-normal px-8 py-3.5 rounded-full shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.16)] transition-shadow duration-300">
+            Add to cart
+          </button>
         </div>
       </div>
 
       {/* CONTENT */}
-      <div className="mt-2 space-y-1">
-
+      <div className="mt-3 flex flex-col items-center text-center">
         {/* TITLE */}
-        <h3 className="text-sm font-medium text-gray-800 line-clamp-2">
-          {product.title}
+        <h3 className="text-[13px] text-gray-800 line-clamp-1">
+          {product.name || product.title}
         </h3>
 
-        {/* RATING */}
-        <div className="flex items-center gap-1 text-yellow-500 text-xs">
-          {[...Array(5)].map((_, i) => (
-            <FaStar key={i} />
-          ))}
-          <span className="text-gray-500 ml-1 text-[11px]">
-            (1,299)
-          </span>
-        </div>
-
         {/* PRICE */}
-        <div className="flex items-center gap-2">
-          <span className="text-md font-semibold text-black">
+        <div className="mt-1 flex items-center gap-1.5">
+          <span className="text-[14px] text-gray-900 font-medium">
             ₹{product.price}
           </span>
-          <span className="text-xs text-gray-400 line-through">
+          <span className="text-[12px] text-gray-500 line-through">
             ₹{product.price + 500}
           </span>
+          <span className="text-[10px] font-bold text-gray-900 uppercase tracking-wide">
+            SAVE {Math.round((500 / (product.price + 500)) * 100)}%
+          </span>
         </div>
-
       </div>
+
     </div>
   );
 };

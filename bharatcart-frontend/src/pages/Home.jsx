@@ -2,7 +2,7 @@ import HeroSection from "../components/HeroSection";
 import StyleFinder from "../components/StyleFinder";
 import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
-import api from "../api/axios";
+import { getAllProducts } from "../api/productApi";
 import TrustStrip from "../components/TrustStrip";
 import CategoryStrip from "../components/CategoryStrip";
 
@@ -12,8 +12,12 @@ const Home = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const res = await api.get("/products");
-      setProducts(res.data);
+      try {
+        const data = await getAllProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      }
     };
     fetchProducts();
   }, []);
@@ -59,7 +63,7 @@ const Home = () => {
           </div>
 
           {/* 🔥 USE FILTERED (IMPORTANT FIX) */}
-          <div className="grid grid-cols-5 gap-4">
+          <div className="grid grid-cols-4 gap-6">
             {filtered.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
