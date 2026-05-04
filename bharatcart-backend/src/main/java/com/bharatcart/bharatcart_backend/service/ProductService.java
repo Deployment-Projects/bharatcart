@@ -24,4 +24,25 @@ public class ProductService {
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElseThrow();
     }
+
+    public Product updateProduct(Long id, Product updatedProduct) {
+        Product existingProduct = getProductById(id);
+        
+        existingProduct.setName(updatedProduct.getName());
+        existingProduct.setPrice(updatedProduct.getPrice());
+        existingProduct.setDescription(updatedProduct.getDescription());
+        existingProduct.setCategory(updatedProduct.getCategory());
+        
+        // Update images
+        existingProduct.setImageUrl(updatedProduct.getImageUrl());
+        existingProduct.setCardImageUrl(updatedProduct.getCardImageUrl());
+        existingProduct.setHoverImageUrl(updatedProduct.getHoverImageUrl());
+        existingProduct.setDetailImageUrls(updatedProduct.getDetailImageUrls());
+        
+        return productRepository.save(existingProduct);
+    }
+
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+    }
 }

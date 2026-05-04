@@ -9,6 +9,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import MainLayout from "./layout/MainLayout";
 import AuthLayout from "./layout/AuthLayout";
 import AddProduct from "./pages/AddProduct";
+import EditProduct from "./pages/EditProduct";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/add-product" element={<AddProduct />} />
+          <Route path="/edit-product/:id" element={<EditProduct />} />
         </Route>
 
                 {/* 🔐 AUTH PAGES (NO NAVBAR) */}
