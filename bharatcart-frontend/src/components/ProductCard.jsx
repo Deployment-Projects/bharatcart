@@ -1,6 +1,7 @@
 import { FaRegHeart } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 import defaultPrimaryImg from "../assets/default-products/necklace 3.png";
 import defaultHoverImg from "../assets/default-products/model necklace 3.png";
@@ -17,6 +18,7 @@ const ProductCard = ({ product }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   // Prefer new structured fields, fall back to legacy imageUrl, then local defaults
   const primaryImage =
@@ -83,7 +85,7 @@ const ProductCard = ({ product }) => {
         >
           <button
             className="bg-[#f0eee4] text-gray-900 text-[13px] font-normal px-7 py-3 rounded-full shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)] transition-shadow duration-300 whitespace-nowrap"
-            onClick={(e) => { e.stopPropagation(); }}
+            onClick={(e) => { e.stopPropagation(); addToCart(product); }}
           >
             Add to cart
           </button>

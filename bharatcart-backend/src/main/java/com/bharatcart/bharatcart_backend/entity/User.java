@@ -20,4 +20,14 @@ public class User {
     private String password;
 
     private String role; // USER / ADMIN
+
+    // Account status flags — used by Spring Security's AuthenticationManager
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private boolean enabled = true;
+
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private boolean accountNonLocked = true;
+
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private boolean credentialsNonExpired = true;
 }

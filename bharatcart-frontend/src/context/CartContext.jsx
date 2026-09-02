@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
 import api from "../api/axios";
 import { useAuth } from "./AuthContext";
+import Toast from "../components/Toast";
 
 const CartContext = createContext();
 

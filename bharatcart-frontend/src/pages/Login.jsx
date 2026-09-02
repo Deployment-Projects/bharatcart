@@ -27,7 +27,7 @@ export default function Login() {
         password
       });
 
-      const token = response.data;
+      const token = response.data.token; // backend returns { token: "eyJ..." }
 
         // 🧠 Save token in context
       login(token, { email });
