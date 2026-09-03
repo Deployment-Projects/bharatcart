@@ -70,6 +70,7 @@ export const CartProvider = ({ children }) => {
 
   // Add to cart
   const addToCart = async (product) => {
+    debugger;
     const effectiveToken = getToken();
 
     // Guest user
@@ -88,6 +89,8 @@ export const CartProvider = ({ children }) => {
           product,
           quantity: 1,
         });
+        
+        console.log(guestCart[guestCart.length - 1])
 
         setToast("Added to Cart ✅");
         setTimeout(() => setToast(""), 2000);
