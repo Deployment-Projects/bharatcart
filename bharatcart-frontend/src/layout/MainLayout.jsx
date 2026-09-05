@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
 import StickyCart from "../components/StickyCart";
+import CartDrawer from "../components/CartDrawer";
 
 const MainLayout = () => {
   return (
@@ -22,6 +23,7 @@ const MainLayout = () => {
       </footer>
       
       <StickyCart />
+      <CartDrawer />
     </div>
   );
 };

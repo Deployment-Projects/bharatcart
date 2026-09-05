@@ -10,7 +10,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const { user, logout } = useAuth();
-  const { cartCount } = useCart();
+  const { cartCount, openDrawer } = useCart();
 
   const [search, setSearch] = useState("");
 
@@ -72,7 +72,7 @@ export default function Navbar() {
         )}
         {/* Cart Icon */}
         <div
-          onClick={() => navigate("/cart")}
+          onClick={openDrawer}
           className="relative cursor-pointer transition duration-300 hover:scale-110"
         >
           <ShoppingCart size={24} />

@@ -10,8 +10,16 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [toast, setToast] = useState("");
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [lastAddedProduct, setLastAddedProduct] = useState(null);
   const { token } = useAuth();
   const refreshRequestRef = useRef(0);
+
+  const openDrawer = () => setIsDrawerOpen(true);
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+    setLastAddedProduct(null);
+  };
 
   const getToken = () => localStorage.getItem("token");
   const normalizeItem = (item) => ({
@@ -89,8 +97,6 @@ export const CartProvider = ({ children }) => {
           product,
           quantity: 1,
         });
-        
-        console.log(guestCart[guestCart.length - 1])
 
         setToast("Added to Cart ✅");
         setTimeout(() => setToast(""), 2000);
@@ -98,6 +104,8 @@ export const CartProvider = ({ children }) => {
 
       localStorage.setItem("guestCart", JSON.stringify(guestCart));
       setCartItems(sortItemsStable(guestCart.map(normalizeItem)));
+      setLastAddedProduct(product);
+      openDrawer();
       return;
     }
 
@@ -105,6 +113,8 @@ export const CartProvider = ({ children }) => {
     await api.post(`/cart/add/${product.id}`);
     await refreshCart();
 
+    setLastAddedProduct(product);
+    openDrawer();
     setToast("Added to Cart ✅");
     setTimeout(() => setToast(""), 2000);
   };
@@ -196,6 +206,10 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         updateQuantity,
         isInCart,
+        isDrawerOpen,
+        openDrawer,
+        closeDrawer,
+        lastAddedProduct,
       }}
     >
       {children}

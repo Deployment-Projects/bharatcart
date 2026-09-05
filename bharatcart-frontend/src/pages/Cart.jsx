@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { getAllProducts } from "../api/productApi";
+import ProductCard from "../components/ProductCard";
 
 const BASE_URL = "http://localhost:8080";
 
@@ -12,6 +15,28 @@ const formatImageUrl = (url) => {
 export default function Cart() {
   const { cartItems, updateQuantity, removeFromCart } = useCart();
   const navigate = useNavigate();
+  const [allProducts, setAllProducts] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+
+  // Always start at the top of the page
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    getAllProducts()
+      .then((data) => {
+        setAllProducts(data);
+        // Snapshot once: exclude products already in cart at load time
+        const cartIds = new Set(
+          cartItems.map((i) => i.product?.id ?? i.productId)
+        );
+        setRelatedProducts(data.filter((p) => !cartIds.has(p.id)).slice(0, 8));
+      })
+      .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -223,6 +248,20 @@ export default function Cart() {
           </div>
         </div>
       </div>
+
+      {/* ── YOU MIGHT ALSO LIKE ── */}
+      {relatedProducts.length > 0 && (
+        <div className="mt-12 border-t border-gray-200 pt-10 max-w-5xl mx-auto px-4 pb-16">
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">
+            You Might Also Like
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+            {relatedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
