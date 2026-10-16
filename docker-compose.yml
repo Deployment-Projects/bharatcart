@@ -1,0 +1,48 @@
+services:
+  bharatcart-backend:
+    build: ./bharatcart-backend
+    container_name: bharatcart-backend-container
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresdockerdb:5432/bharatcartdockerdb
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      postgresdockerdb:
+        condition: service_healthy
+
+  bharatcart-frontend:
+    build: ./bharatcart-frontend
+    container_name: bharatcart-frontend-container
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+          - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+     - bharatcart-backend
+        
+
+  postgresdockerdb:
+    image: postgres:16
+    container_name: postgres-container 
+    restart: always
+    environment:
+      POSTGRES_DB: bharatcartdockerdb
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d bharatcartdockerdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+  uploads_data:

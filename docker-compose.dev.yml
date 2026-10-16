@@ -1,0 +1,16 @@
+services:
+
+  postgresdb:
+    image: postgres:16
+    container_name: bharatcart-postgres-dev
+    environment:
+      POSTGRES_DB: docker-bharatcart-db
+      POSTGRES_USER: lucky
+      POSTGRES_PASSWORD: papa
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata-dev:/var/lib/postgresql/data
+
+volumes:
+  pgdata-dev:

@@ -1,0 +1,5 @@
+﻿# Production secrets - NEVER commit to Git
+.env.prod
+
+# Local dev environment files with credentials
+.env.*.local
